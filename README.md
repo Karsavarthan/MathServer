@@ -1,5 +1,5 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:
+## Date:12/5/2024
 
 ## AIM:
 To design a website to find surface area of a Right Cylinder in server side.
@@ -31,66 +31,104 @@ Publish the website in the given URL.
 
 ## PROGRAM :
 `````
-<!DOCTYPE html>
-<html lang="en">
+math.html
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        input{
-            border-radius: 30px;
-            text-align: center;
-        }
-        body {
-            background-color :pink;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-
-        }
-        
-    </style>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<title>Area of Surface</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<style type="text/css">
+body {
+    background-color: #b9f4f2f2;
+}
+.edge {
+    width: 100%;
+    padding-top: 180px;
+    text-align: center;
+}
+.box {
+    display: inline-block;
+    border: thick dashed #1a7c74;
+    width: 500px;
+    min-height: 300px;
+    font-size: 20px;
+    background-color: rgb(194, 245, 250);
+}
+.formelt {
+    color: black;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+h1 {
+    color: black;
+    padding-top: 20px;
+}
+</style>
 </head>
-<body name="body" id="body">
-    <script>
-        let number=['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
-        function changeColor(){
-            hexcode='';
-            for(let i=0;i<6;i++){
-                random1=Math.floor(Math.random()*number.length);
-                hexcode+=number[random1];
-            }
-            hexcode="#"+hexcode;
-            let b=document.getElementById('body');
-            b.style.backgroundColor=hexcode;
-        }
-        setInterval('changeColor()',100);
-        function check(){
-            radius=document.getElementById('radius').value;
-            height=document.getElementById('height').value;
-            result=document.getElementById('result');
-            area =  2*(3.14)*radius*height + 2*(3.14)*radius*radius;
-            result.value = area;
-        }
-    </script>
-    <center>
-
+<body>
+<div class="edge">
+    <div class="box">
         <h1>Surface Area of Cylinder</h1>
-
-        <h2>Radius : <input size="30px" type="text"  name="radius" id="radius" placeholder="Enter the Radius of the cylinder">m <br> <br>
-        Height : <input type="text" size="30px" name="height" id="height" placeholder="Enter the Height of the cylinder">m <br><br>
-        <button type="button" onclick="check()">AREA</button> <br> <br>
-        Output : <input type="text" size="30px" name="result" id="result" placeholder="Output"> m<sup>2</sup></span></h2>
-    </center>
+        <h3>Karsa varthan r r (212223230100)</h3>
+        <form method="POST">
+            
+            <div class="formelt">
+                Radius: <input type="text" name="radius" value="{{r}}"></input>m<br/>
+            </div>
+            <div class="formelt">
+                Height: <input type="text" name="height" value="{{h}}"></input>m<br/>
+            </div>
+            <div class="formelt">
+                <input type="submit" value="Calculate"></input><br/>
+            </div>
+            <div class="formelt">
+                Area: <input type="text" name="area" value="{{area}}">m<sup>2</sup><br/>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
+views.py
+from django.shortcuts import render
+def surfacearea(request):
+    context = {}
+    context['area'] = "0"
+    context['r'] = "0"
+    context['h'] = "0"
+    if request.method == 'POST':
+        print("POST method is used")
+        print('request.POST:', request.POST)
+        r = request.POST.get('radius', '0') 
+        h = request.POST.get('height', '0') 
+        print('radius =', r)
+        print('height =', h)
+        area = 2 * 3.14 * int(r) * int(h) + 2*3.14*int(r)*int(r)
+        context['area'] = area
+        context['r'] = r
+        context['h'] = h
+        print('Area =', area)
+    
+    return render(request, 'mathapp/math.html',context)
+urls.py
+from django.contrib import admin
+from django.urls import path
+from mathapp import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('surfacearea/',views.surfacearea,name="surfacearea"),
+    path('',views.surfacearea,name="surfcaearea")
+]
 `````
-## OUTPUT:
-![Screenshot 2024-05-12 133252](https://github.com/Karsavarthan/MathServer/assets/139841970/fa88c387-99fe-4be8-b201-bb4f075324d0)
-![Screenshot 2024-05-12 133309](https://github.com/Karsavarthan/MathServer/assets/139841970/a3b88ab0-8ac9-4f0d-8d34-cf2f469d5179)
+
+## SERVER SIDE PROCESSING:
+![Screenshot 2024-05-12 135508](https://github.com/Karsavarthan/MathServer/assets/139841970/d0645c10-1556-4b70-93b1-2da801b92d2c)
+## HOMEPAGE:
+![image](https://github.com/Karsavarthan/MathServer/assets/139841970/1d34a1ac-c8ce-4261-9367-4cfa9f28b66f)
+
+
 
 
 
